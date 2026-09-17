@@ -24,3 +24,4 @@
 /Users/daviderosa/Programmazione/ArduinoAsDevice/samples/ConsoleDemo/obj/Debug/net8.0/ConsoleDemo.pdb
 /Users/daviderosa/Programmazione/ArduinoAsDevice/samples/ConsoleDemo/obj/Debug/net8.0/ConsoleDemo.genruntimeconfig.cache
 /Users/daviderosa/Programmazione/ArduinoAsDevice/samples/ConsoleDemo/obj/Debug/net8.0/ref/ConsoleDemo.dll
+/Users/daviderosa/Programmazione/ArduinoAsDevice/samples/ConsoleDemo/obj/Debug/net8.0/ConsoleDemo.sourcelink.json

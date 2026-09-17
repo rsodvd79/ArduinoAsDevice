@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.IO.Ports;
 using System.Text;
 using System.Threading;
@@ -26,6 +27,19 @@ namespace ArduinoAsDevice
 
         /// <summary>Scatenato per ogni lettura inviata in automatico dallo streaming.</summary>
         public event EventHandler<PinReadingEventArgs> ReadingReceived;
+
+        /// <summary>
+        /// Callback opzionale per loggare tutta la comunicazione seriale.
+        /// Il primo parametro è la riga, il secondo indica la direzione
+        /// (true = inviata al device, false = ricevuta dal device).
+        /// </summary>
+        public Action<string, bool> Logger { get; set; }
+
+        /// <summary>
+        /// Se impostato, scrive il log della comunicazione seriale su questo writer
+        /// (es. Console.Out, uno StreamWriter su file). Alternative a <see cref="Logger"/>.
+        /// </summary>
+        public TextWriter LogOutput { get; set; }
 
         public bool IsOpen { get { return _port.IsOpen; } }
 
@@ -116,6 +130,16 @@ namespace ArduinoAsDevice
             Dispose();
         }
 
+        private void Log(string line, bool sent)
+        {
+            var logger = Logger;
+            if (logger != null)
+                logger(line, sent);
+            var writer = LogOutput;
+            if (writer != null)
+                writer.WriteLine("{0:HH:mm:ss.fff} {1} {2}", DateTime.Now, sent ? ">>" : "<<", line);
+        }
+
         // ----- protocollo -----
 
         private void ExpectOk(string command)
@@ -130,6 +154,7 @@ namespace ArduinoAsDevice
             lock (_syncLock)
             {
                 _lastResponse = null;
+                Log(command, true);
                 _port.WriteLine(command);
                 if (!_responseReady.WaitOne(ResponseTimeout))
                     throw new ArduinoTimeoutException(command);
@@ -192,6 +217,7 @@ namespace ArduinoAsDevice
         private void DispatchLine(string line)
         {
             if (line.Length == 0) return;
+            Log(line, false);
 
             // evento di streaming: "S <pin> <value>"
             if (line.StartsWith("S ", StringComparison.Ordinal))

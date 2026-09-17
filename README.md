@@ -83,6 +83,30 @@ dev.StopStream();
 | `StartStream(pin, analog, intervalMs)` | Avvia l'invio automatico delle letture |
 | `StopStream()` | Ferma lo streaming |
 | `event ReadingReceived` | Scatenato a ogni lettura ricevuta dallo streaming |
+| `Logger` | Callback `Action<string, bool>` per loggare la comunicazione (riga, direzione: `true` = inviata) |
+| `LogOutput` | `TextWriter` su cui scrivere il log seriale con timestamp (es. `Console.Out` o un file) |
+
+### Logging della comunicazione seriale
+
+```csharp
+// Opzione 1: su console/file con timestamp automatico
+dev.LogOutput = Console.Out;
+// oppure su file:
+dev.LogOutput = new StreamWriter("serial.log") { AutoFlush = true };
+
+// Opzione 2: callback personalizzata
+dev.Logger = (line, sent) =>
+    Console.WriteLine(sent ? $"TX: {line}" : $"RX: {line}");
+```
+
+Esempio di output su `LogOutput`:
+
+```
+22:31:04.512 >> PING
+22:31:04.530 << PONG 1.0.0
+22:31:04.612 >> DREAD 2
+22:31:04.625 << D 2 1
+```
 
 ## Protocollo seriale
 

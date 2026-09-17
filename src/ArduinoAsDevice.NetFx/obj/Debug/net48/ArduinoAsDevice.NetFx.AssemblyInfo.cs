@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ArduinoAsDevice")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+0d11468ddb257bc9c60452091eb93d98dab245ea")]
 [assembly: System.Reflection.AssemblyProductAttribute("ArduinoAsDevice")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ArduinoAsDevice")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
