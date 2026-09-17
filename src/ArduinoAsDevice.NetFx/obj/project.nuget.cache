@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "UwmIbAjAmgdpa6pkN8vyki+fQFritGChfG88EzJMgdO2y8XNjBJmh7y+CGuk0jgMQVROmhshLB9KV6zAWOrvHQ==",
+  "success": true,
+  "projectFilePath": "/Users/daviderosa/Programmazione/ArduinoAsDevice/src/ArduinoAsDevice.NetFx/ArduinoAsDevice.NetFx.csproj",
+  "expectedPackageFiles": [
+    "/Users/daviderosa/.nuget/packages/microsoft.netframework.referenceassemblies/1.0.3/microsoft.netframework.referenceassemblies.1.0.3.nupkg.sha512",
+    "/Users/daviderosa/.nuget/packages/microsoft.netframework.referenceassemblies.net48/1.0.3/microsoft.netframework.referenceassemblies.net48.1.0.3.nupkg.sha512"
+  ],
+  "logs": []
+}

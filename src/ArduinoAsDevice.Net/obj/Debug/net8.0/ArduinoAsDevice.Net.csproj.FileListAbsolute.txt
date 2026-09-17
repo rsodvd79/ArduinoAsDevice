@@ -1,0 +1,12 @@
+/Users/daviderosa/Programmazione/ArduinoAsDevice/src/ArduinoAsDevice.Net/bin/Debug/net8.0/ArduinoAsDevice.deps.json
+/Users/daviderosa/Programmazione/ArduinoAsDevice/src/ArduinoAsDevice.Net/bin/Debug/net8.0/ArduinoAsDevice.dll
+/Users/daviderosa/Programmazione/ArduinoAsDevice/src/ArduinoAsDevice.Net/bin/Debug/net8.0/ArduinoAsDevice.pdb
+/Users/daviderosa/Programmazione/ArduinoAsDevice/src/ArduinoAsDevice.Net/obj/Debug/net8.0/ArduinoAsDevice.Net.csproj.AssemblyReference.cache
+/Users/daviderosa/Programmazione/ArduinoAsDevice/src/ArduinoAsDevice.Net/obj/Debug/net8.0/ArduinoAsDevice.Net.GeneratedMSBuildEditorConfig.editorconfig
+/Users/daviderosa/Programmazione/ArduinoAsDevice/src/ArduinoAsDevice.Net/obj/Debug/net8.0/ArduinoAsDevice.Net.AssemblyInfoInputs.cache
+/Users/daviderosa/Programmazione/ArduinoAsDevice/src/ArduinoAsDevice.Net/obj/Debug/net8.0/ArduinoAsDevice.Net.AssemblyInfo.cs
+/Users/daviderosa/Programmazione/ArduinoAsDevice/src/ArduinoAsDevice.Net/obj/Debug/net8.0/ArduinoAsDevice.Net.csproj.CoreCompileInputs.cache
+/Users/daviderosa/Programmazione/ArduinoAsDevice/src/ArduinoAsDevice.Net/obj/Debug/net8.0/ArduinoAsDevice.dll
+/Users/daviderosa/Programmazione/ArduinoAsDevice/src/ArduinoAsDevice.Net/obj/Debug/net8.0/refint/ArduinoAsDevice.dll
+/Users/daviderosa/Programmazione/ArduinoAsDevice/src/ArduinoAsDevice.Net/obj/Debug/net8.0/ArduinoAsDevice.pdb
+/Users/daviderosa/Programmazione/ArduinoAsDevice/src/ArduinoAsDevice.Net/obj/Debug/net8.0/ref/ArduinoAsDevice.dll
