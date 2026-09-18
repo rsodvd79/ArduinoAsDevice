@@ -19,7 +19,8 @@ ArduinoAsDevice/
 │   ├── ArduinoAsDevice.Net/           # libreria .NET 8.0
 │   └── ArduinoAsDevice.NetFx/         # libreria .NET Framework 4.8
 ├── samples/
-│   └── ConsoleDemo/                   # applicazione console di esempio
+│   ├── ConsoleDemo/                   # applicazione console di esempio
+│   └── WinFormsDemo/                  # pannello desktop Windows per pin e stream
 └── ArduinoAsDevice.sln
 ```
 
@@ -141,6 +142,27 @@ dotnet run --project samples/ConsoleDemo -- COM3
 ```
 
 Senza argomenti mostra le porte seriali disponibili.
+
+### Demo WinForms
+
+Su Windows è disponibile anche un pannello grafico per:
+
+- scegliere il profilo Arduino Uno, Nano o Mega e la porta COM;
+- aprire e chiudere la comunicazione;
+- configurare modalità, stato digitale, PWM e tone dei pin compatibili;
+- leggere e rappresentare lo stato dei pin;
+- visualizzare lo stream analogico o digitale di un pin in un grafico;
+- consultare il log seriale con timestamp e direzione TX/RX;
+- salvare e caricare porta, baud rate, pin e parametri stream in JSON.
+
+```bash
+dotnet run --project samples/WinFormsDemo
+```
+
+I pin D0/D1 sono mostrati ma protetti perché usati dalla seriale. Il caricamento
+di un file aggiorna la UI senza connettere il dispositivo né avviare lo stream:
+se il dispositivo è già connesso, usare **Applica configurazione** per inviare le
+impostazioni. Come il protocollo, il grafico gestisce un solo pin alla volta.
 
 ## Note e limiti
 
