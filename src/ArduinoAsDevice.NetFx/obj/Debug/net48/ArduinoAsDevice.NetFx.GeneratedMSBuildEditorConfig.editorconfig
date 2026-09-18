@@ -1,5 +1,0 @@
-is_global = true
-build_property.RootNamespace = ArduinoAsDevice
-build_property.ProjectDir = /Users/daviderosa/Programmazione/ArduinoAsDevice/src/ArduinoAsDevice.NetFx/
-build_property.EnableComHosting = 
-build_property.EnableGeneratedComInterfaceComImportInterop = 

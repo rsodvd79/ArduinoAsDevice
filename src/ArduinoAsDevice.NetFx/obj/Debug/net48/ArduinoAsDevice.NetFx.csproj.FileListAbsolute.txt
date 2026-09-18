@@ -1,9 +1,0 @@
-/Users/daviderosa/Programmazione/ArduinoAsDevice/src/ArduinoAsDevice.NetFx/bin/Debug/net48/ArduinoAsDevice.dll
-/Users/daviderosa/Programmazione/ArduinoAsDevice/src/ArduinoAsDevice.NetFx/bin/Debug/net48/ArduinoAsDevice.pdb
-/Users/daviderosa/Programmazione/ArduinoAsDevice/src/ArduinoAsDevice.NetFx/obj/Debug/net48/ArduinoAsDevice.NetFx.GeneratedMSBuildEditorConfig.editorconfig
-/Users/daviderosa/Programmazione/ArduinoAsDevice/src/ArduinoAsDevice.NetFx/obj/Debug/net48/ArduinoAsDevice.NetFx.AssemblyInfoInputs.cache
-/Users/daviderosa/Programmazione/ArduinoAsDevice/src/ArduinoAsDevice.NetFx/obj/Debug/net48/ArduinoAsDevice.NetFx.AssemblyInfo.cs
-/Users/daviderosa/Programmazione/ArduinoAsDevice/src/ArduinoAsDevice.NetFx/obj/Debug/net48/ArduinoAsDevice.NetFx.csproj.CoreCompileInputs.cache
-/Users/daviderosa/Programmazione/ArduinoAsDevice/src/ArduinoAsDevice.NetFx/obj/Debug/net48/ArduinoAsDevice.dll
-/Users/daviderosa/Programmazione/ArduinoAsDevice/src/ArduinoAsDevice.NetFx/obj/Debug/net48/ArduinoAsDevice.pdb
-/Users/daviderosa/Programmazione/ArduinoAsDevice/src/ArduinoAsDevice.NetFx/obj/Debug/net48/ArduinoAsDevice.NetFx.sourcelink.json
