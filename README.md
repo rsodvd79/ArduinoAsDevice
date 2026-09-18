@@ -159,6 +159,8 @@ Su Windows è disponibile anche un pannello grafico per:
 dotnet run --project samples/WinFormsDemo
 ```
 
+![WinFormsDemo](Scrennshot/WinFormaDemo.png)
+
 I pin D0/D1 sono mostrati ma protetti perché usati dalla seriale. Il caricamento
 di un file aggiorna la UI senza connettere il dispositivo né avviare lo stream:
 se il dispositivo è già connesso, usare **Applica configurazione** per inviare le

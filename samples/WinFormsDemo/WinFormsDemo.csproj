@@ -8,10 +8,15 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <AssemblyVersion>2026.9.18.1002</AssemblyVersion>
     <FileVersion>2026.9.18.1002</FileVersion>
+    <ApplicationIcon>AppIcon.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\ArduinoAsDevice.Net\ArduinoAsDevice.Net.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="AppIcon.ico" />
   </ItemGroup>
 
 </Project>

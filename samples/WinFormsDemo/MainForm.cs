@@ -63,6 +63,7 @@ internal sealed class MainForm : Form
     public MainForm()
     {
         Text = "ArduinoAsDevice - WinForms Demo";
+        Icon = LoadEmbeddedIcon();
         StartPosition = FormStartPosition.CenterScreen;
         MinimumSize = new Size(960, 640);
         Size = new Size(1180, 760);
@@ -801,6 +802,13 @@ internal sealed class MainForm : Form
             (int)_streamInterval.Minimum,
             (int)_streamInterval.Maximum);
         RefreshGrid();
+    }
+
+    private static Icon LoadEmbeddedIcon()
+    {
+        var assembly = typeof(MainForm).Assembly;
+        using var stream = assembly.GetManifestResourceStream("WinFormsDemo.AppIcon.ico");
+        return stream != null ? new Icon(stream) : null;
     }
 
     private static PinConfiguration ClonePinConfiguration(PinConfiguration source) =>
