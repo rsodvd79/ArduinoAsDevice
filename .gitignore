@@ -83,3 +83,4 @@ $tf/
 _ReSharper*/
 *.[Rr]e[Ss]harper
 *.DotSettings.user
+/ArduinoAsDevice.hex
