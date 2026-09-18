@@ -6,12 +6,20 @@
     <UseWindowsForms>true</UseWindowsForms>
     <Nullable>disable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <AssemblyVersion>2026.9.18.1101</AssemblyVersion>
-    <FileVersion>2026.9.18.1101</FileVersion>
+    <AssemblyVersion>2026.9.18.1318</AssemblyVersion>
+    <FileVersion>2026.9.18.1318</FileVersion>
+    <PackageIcon>AppIcon.png</PackageIcon>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\ArduinoAsDevice.Net\ArduinoAsDevice.Net.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="AppIcon.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>

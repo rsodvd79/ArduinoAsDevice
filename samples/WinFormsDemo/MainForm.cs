@@ -3,54 +3,8 @@ using ArduinoAsDevice;
 
 namespace WinFormsDemo;
 
-internal sealed class MainForm : Form
+internal sealed partial class MainForm : Form
 {
-    private readonly ComboBox _boardCombo = new() { DropDownStyle = ComboBoxStyle.DropDownList, Width = 140 };
-    private readonly ComboBox _portCombo = new() { Width = 100 };
-    private readonly ComboBox _baudCombo = new() { Width = 90 };
-    private readonly Button _refreshPortsButton = new() { Text = "Aggiorna porte", AutoSize = true };
-    private readonly Button _connectButton = new() { Text = "Avvia", AutoSize = true };
-    private readonly Button _loadButton = new() { Text = "Carica...", AutoSize = true };
-    private readonly Button _saveButton = new() { Text = "Salva...", AutoSize = true };
-    private readonly Button _applyAllButton = new() { Text = "Applica configurazione", AutoSize = true };
-    private readonly DataGridView _pinGrid = new()
-    {
-        Dock = DockStyle.Fill,
-        AllowUserToAddRows = false,
-        AllowUserToDeleteRows = false,
-        AllowUserToResizeRows = false,
-        AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill,
-        MultiSelect = false,
-        ReadOnly = true,
-        RowHeadersVisible = false,
-        SelectionMode = DataGridViewSelectionMode.FullRowSelect
-    };
-    private readonly Label _selectedPinLabel = new() { Text = "Nessun pin", AutoSize = true };
-    private readonly Label _pinWarningLabel = new() { AutoSize = true, ForeColor = Color.DarkOrange };
-    private readonly ComboBox _modeCombo = new() { DropDownStyle = ComboBoxStyle.DropDownList, Width = 130 };
-    private readonly Button _applyModeButton = new() { Text = "Applica modalità", AutoSize = true };
-    private readonly ComboBox _readTypeCombo = new() { DropDownStyle = ComboBoxStyle.DropDownList, Width = 100 };
-    private readonly Button _readButton = new() { Text = "Leggi", AutoSize = true };
-    private readonly Label _currentValueLabel = new() { Text = "Valore: —", AutoSize = true };
-    private readonly ComboBox _outputKindCombo = new() { DropDownStyle = ComboBoxStyle.DropDownList, Width = 100 };
-    private readonly NumericUpDown _outputValue = new() { Minimum = 0, Maximum = 1, Width = 100 };
-    private readonly Button _writeButton = new() { Text = "Scrivi", AutoSize = true };
-    private readonly ComboBox _streamPinCombo = new() { DropDownStyle = ComboBoxStyle.DropDownList, Width = 100 };
-    private readonly ComboBox _streamTypeCombo = new() { DropDownStyle = ComboBoxStyle.DropDownList, Width = 100 };
-    private readonly NumericUpDown _streamInterval = new() { Minimum = 1, Maximum = 60_000, Value = 250, Width = 90 };
-    private readonly Button _streamButton = new() { Text = "Avvia stream", AutoSize = true };
-    private readonly StreamChart _chart = new() { Dock = DockStyle.Fill };
-    private readonly RichTextBox _serialLog = new()
-    {
-        Dock = DockStyle.Fill,
-        ReadOnly = true,
-        WordWrap = false,
-        BackColor = Color.FromArgb(24, 27, 32),
-        ForeColor = Color.Gainsboro,
-        Font = new Font("Consolas", 9f)
-    };
-    private readonly Button _clearLogButton = new() { Text = "Pulisci", AutoSize = true, Anchor = AnchorStyles.Right };
-    private readonly ToolStripStatusLabel _statusLabel = new() { Spring = true, TextAlign = ContentAlignment.MiddleLeft };
     private readonly SemaphoreSlim _operationGate = new(1, 1);
     private readonly Dictionary<int, PinConfiguration> _pinStates = [];
 
@@ -59,18 +13,11 @@ internal sealed class MainForm : Form
     private bool _busy;
     private bool _streamActive;
     private bool _closing;
-    private SplitContainer _mainSplit;
-    private SplitContainer _monitorSplit;
 
     public MainForm()
     {
-        Text = "ArduinoAsDevice - WinForms Demo";
-        Icon = LoadEmbeddedIcon();
-        StartPosition = FormStartPosition.CenterScreen;
-        MinimumSize = new Size(960, 640);
-        Size = new Size(1180, 760);
-
-        BuildLayout();
+        InitializeComponent();
+        // Icon = LoadEmbeddedIcon();
         WireEvents();
 
         _boardCombo.DataSource = BoardProfiles.All.ToList();
@@ -83,143 +30,34 @@ internal sealed class MainForm : Form
         LoadBoard((BoardProfile)_boardCombo.SelectedItem);
     }
 
-    private void BuildLayout()
-    {
-        _pinGrid.Columns.Add("Pin", "Pin");
-        _pinGrid.Columns.Add("Capabilities", "Funzioni");
-        _pinGrid.Columns.Add("Mode", "Modalità");
-        _pinGrid.Columns.Add("Value", "Stato / valore");
-        _pinGrid.Columns[0].FillWeight = 35;
-        _pinGrid.Columns[1].FillWeight = 100;
-        _pinGrid.Columns[2].FillWeight = 55;
-        _pinGrid.Columns[3].FillWeight = 55;
-
-        var connectionBar = new FlowLayoutPanel
-        {
-            AutoSize = true,
-            Dock = DockStyle.Fill,
-            Padding = new Padding(8),
-            WrapContents = true
-        };
-        AddLabeledControl(connectionBar, "Scheda", _boardCombo);
-        AddLabeledControl(connectionBar, "Porta", _portCombo);
-        AddLabeledControl(connectionBar, "Baud", _baudCombo);
-        connectionBar.Controls.AddRange(
-        [
-            _refreshPortsButton,
-            _connectButton,
-            _loadButton,
-            _saveButton,
-            _applyAllButton
-        ]);
-
-        var pinControls = new FlowLayoutPanel
-        {
-            AutoSize = true,
-            Dock = DockStyle.Top,
-            FlowDirection = FlowDirection.TopDown,
-            Padding = new Padding(8),
-            WrapContents = false
-        };
-        _selectedPinLabel.Font = new Font(Font, FontStyle.Bold);
-        pinControls.Controls.Add(_selectedPinLabel);
-        pinControls.Controls.Add(_pinWarningLabel);
-        pinControls.Controls.Add(CreateRow("Modalità", _modeCombo, _applyModeButton));
-        pinControls.Controls.Add(CreateRow("Lettura", _readTypeCombo, _readButton, _currentValueLabel));
-        pinControls.Controls.Add(CreateRow("Uscita", _outputKindCombo, _outputValue, _writeButton));
-
-        var pinGroup = new GroupBox { Text = "Pin selezionato", Dock = DockStyle.Fill };
-        pinGroup.Controls.Add(pinControls);
-
-        var streamBar = new FlowLayoutPanel
-        {
-            AutoSize = true,
-            Dock = DockStyle.Top,
-            Padding = new Padding(8),
-            WrapContents = true
-        };
-        AddLabeledControl(streamBar, "Pin", _streamPinCombo);
-        AddLabeledControl(streamBar, "Tipo", _streamTypeCombo);
-        AddLabeledControl(streamBar, "Intervallo ms", _streamInterval);
-        streamBar.Controls.Add(_streamButton);
-
-        var streamPanel = new Panel { Dock = DockStyle.Fill };
-        streamPanel.Controls.Add(_chart);
-        streamPanel.Controls.Add(streamBar);
-        _chart.BringToFront();
-
-        var streamGroup = new GroupBox { Text = "Stream", Dock = DockStyle.Fill };
-        streamGroup.Controls.Add(streamPanel);
-
-        var logLayout = new TableLayoutPanel { Dock = DockStyle.Fill, RowCount = 2, ColumnCount = 1 };
-        logLayout.RowStyles.Add(new RowStyle(SizeType.AutoSize));
-        logLayout.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
-        var logToolbar = new FlowLayoutPanel
-        {
-            AutoSize = true,
-            Dock = DockStyle.Fill,
-            FlowDirection = FlowDirection.RightToLeft
-        };
-        logToolbar.Controls.Add(_clearLogButton);
-        logLayout.Controls.Add(logToolbar, 0, 0);
-        logLayout.Controls.Add(_serialLog, 0, 1);
-
-        var logGroup = new GroupBox { Text = "Log comunicazione seriale", Dock = DockStyle.Fill };
-        logGroup.Controls.Add(logLayout);
-
-        _monitorSplit = new SplitContainer
-        {
-            Dock = DockStyle.Fill,
-            Orientation = Orientation.Horizontal
-        };
-        _monitorSplit.Panel1.Controls.Add(streamGroup);
-        _monitorSplit.Panel2.Controls.Add(logGroup);
-
-        var rightLayout = new TableLayoutPanel
-        {
-            Dock = DockStyle.Fill,
-            RowCount = 2,
-            ColumnCount = 1
-        };
-        rightLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 180));
-        rightLayout.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
-        rightLayout.Controls.Add(pinGroup, 0, 0);
-        rightLayout.Controls.Add(_monitorSplit, 0, 1);
-
-        _mainSplit = new SplitContainer
-        {
-            Dock = DockStyle.Fill
-        };
-        _mainSplit.Panel1.Controls.Add(_pinGrid);
-        _mainSplit.Panel2.Controls.Add(rightLayout);
-
-        var statusStrip = new StatusStrip();
-        statusStrip.Items.Add(_statusLabel);
-        _statusLabel.Text = "Disconnesso";
-
-        var root = new TableLayoutPanel
-        {
-            Dock = DockStyle.Fill,
-            RowCount = 3,
-            ColumnCount = 1
-        };
-        root.RowStyles.Add(new RowStyle(SizeType.AutoSize));
-        root.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
-        root.RowStyles.Add(new RowStyle(SizeType.AutoSize));
-        root.Controls.Add(connectionBar, 0, 0);
-        root.Controls.Add(_mainSplit, 0, 1);
-        root.Controls.Add(statusStrip, 0, 2);
-        Controls.Add(root);
-    }
-
     protected override void OnLoad(EventArgs e)
     {
         base.OnLoad(e);
 
+        // A questo punto il layout dei pannelli annidati potrebbe non essere ancora
+        // completato (OnLoad scatta dentro CreateControl/WmShowWindow), quindi
+        // Width/Height dei SplitContainer possono risultare 0 o troppo piccoli.
+        // Si rimanda il calcolo delle proporzioni al termine del giro di messaggi corrente.
+        BeginInvoke(ApplySplitterProportions);
+    }
+
+    private void ApplySplitterProportions()
+    {
         // Proporzioni allineate allo screenshot di riferimento (Scrennshot\WinFormaDemo.png):
         // griglia pin ~28% della larghezza, area grafico ~53% dell'altezza del pannello monitor.
-        _mainSplit.SplitterDistance = (int)(_mainSplit.Width * 0.28);
-        _monitorSplit.SplitterDistance = (int)(_monitorSplit.Height * 0.53);
+        SetSplitterDistanceSafe(_mainSplit, (int)(_mainSplit.Width * 0.28));
+        SetSplitterDistanceSafe(_monitorSplit, (int)(_monitorSplit.Height * 0.53));
+    }
+
+    private static void SetSplitterDistanceSafe(SplitContainer splitter, int distance)
+    {
+        var extent = splitter.Orientation == Orientation.Horizontal ? splitter.Height : splitter.Width;
+        var minimum = splitter.Panel1MinSize;
+        var maximum = extent - splitter.Panel2MinSize;
+        if (maximum <= minimum)
+            return;
+
+        splitter.SplitterDistance = Math.Clamp(distance, minimum, maximum);
     }
 
     private void WireEvents()
@@ -252,31 +90,6 @@ internal sealed class MainForm : Form
         _saveButton.Click += (_, _) => SaveConfiguration();
         _loadButton.Click += (_, _) => LoadConfiguration();
         FormClosing += MainForm_FormClosing;
-    }
-
-    private static void AddLabeledControl(Control parent, string label, Control control)
-    {
-        parent.Controls.Add(new Label
-        {
-            Text = label,
-            AutoSize = true,
-            Margin = new Padding(6, 8, 2, 0)
-        });
-        parent.Controls.Add(control);
-    }
-
-    private static FlowLayoutPanel CreateRow(string label, params Control[] controls)
-    {
-        var row = new FlowLayoutPanel { AutoSize = true, WrapContents = false };
-        row.Controls.Add(new Label
-        {
-            Text = label,
-            AutoSize = true,
-            Width = 65,
-            Margin = new Padding(0, 8, 4, 0)
-        });
-        row.Controls.AddRange(controls);
-        return row;
     }
 
     private void RefreshPorts()
@@ -850,11 +663,6 @@ internal sealed class MainForm : Form
         _statusLabel.ForeColor = Color.Firebrick;
         _statusLabel.Text = message;
         MessageBox.Show(this, message, "ArduinoAsDevice", MessageBoxButtons.OK, MessageBoxIcon.Error);
-    }
-
-    private void InitializeComponent()
-    {
-
     }
 
     private async void MainForm_FormClosing(object sender, FormClosingEventArgs e)
