@@ -7,6 +7,8 @@
     <RootNamespace>ArduinoAsDevice</RootNamespace>
     <AssemblyName>ArduinoAsDevice</AssemblyName>
     <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+    <AssemblyVersion>2026.9.18.1000</AssemblyVersion>
+    <FileVersion>2026.9.18.1000</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
