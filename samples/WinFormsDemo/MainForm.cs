@@ -59,6 +59,8 @@ internal sealed class MainForm : Form
     private bool _busy;
     private bool _streamActive;
     private bool _closing;
+    private SplitContainer _mainSplit;
+    private SplitContainer _monitorSplit;
 
     public MainForm()
     {
@@ -165,14 +167,13 @@ internal sealed class MainForm : Form
         var logGroup = new GroupBox { Text = "Log comunicazione seriale", Dock = DockStyle.Fill };
         logGroup.Controls.Add(logLayout);
 
-        var monitorSplit = new SplitContainer
+        _monitorSplit = new SplitContainer
         {
             Dock = DockStyle.Fill,
-            Orientation = Orientation.Horizontal,
-            SplitterDistance = 300
+            Orientation = Orientation.Horizontal
         };
-        monitorSplit.Panel1.Controls.Add(streamGroup);
-        monitorSplit.Panel2.Controls.Add(logGroup);
+        _monitorSplit.Panel1.Controls.Add(streamGroup);
+        _monitorSplit.Panel2.Controls.Add(logGroup);
 
         var rightLayout = new TableLayoutPanel
         {
@@ -183,15 +184,14 @@ internal sealed class MainForm : Form
         rightLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 180));
         rightLayout.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
         rightLayout.Controls.Add(pinGroup, 0, 0);
-        rightLayout.Controls.Add(monitorSplit, 0, 1);
+        rightLayout.Controls.Add(_monitorSplit, 0, 1);
 
-        var split = new SplitContainer
+        _mainSplit = new SplitContainer
         {
-            Dock = DockStyle.Fill,
-            SplitterDistance = 520
+            Dock = DockStyle.Fill
         };
-        split.Panel1.Controls.Add(_pinGrid);
-        split.Panel2.Controls.Add(rightLayout);
+        _mainSplit.Panel1.Controls.Add(_pinGrid);
+        _mainSplit.Panel2.Controls.Add(rightLayout);
 
         var statusStrip = new StatusStrip();
         statusStrip.Items.Add(_statusLabel);
@@ -207,9 +207,19 @@ internal sealed class MainForm : Form
         root.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
         root.RowStyles.Add(new RowStyle(SizeType.AutoSize));
         root.Controls.Add(connectionBar, 0, 0);
-        root.Controls.Add(split, 0, 1);
+        root.Controls.Add(_mainSplit, 0, 1);
         root.Controls.Add(statusStrip, 0, 2);
         Controls.Add(root);
+    }
+
+    protected override void OnLoad(EventArgs e)
+    {
+        base.OnLoad(e);
+
+        // Proporzioni allineate allo screenshot di riferimento (Scrennshot\WinFormaDemo.png):
+        // griglia pin ~28% della larghezza, area grafico ~53% dell'altezza del pannello monitor.
+        _mainSplit.SplitterDistance = (int)(_mainSplit.Width * 0.28);
+        _monitorSplit.SplitterDistance = (int)(_monitorSplit.Height * 0.53);
     }
 
     private void WireEvents()
@@ -840,6 +850,11 @@ internal sealed class MainForm : Form
         _statusLabel.ForeColor = Color.Firebrick;
         _statusLabel.Text = message;
         MessageBox.Show(this, message, "ArduinoAsDevice", MessageBoxButtons.OK, MessageBoxIcon.Error);
+    }
+
+    private void InitializeComponent()
+    {
+
     }
 
     private async void MainForm_FormClosing(object sender, FormClosingEventArgs e)
