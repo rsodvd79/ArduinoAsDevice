@@ -6,8 +6,8 @@
     <UseWindowsForms>true</UseWindowsForms>
     <Nullable>disable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <AssemblyVersion>2026.9.18.1318</AssemblyVersion>
-    <FileVersion>2026.9.18.1318</FileVersion>
+    <AssemblyVersion>2026.9.18.1325</AssemblyVersion>
+    <FileVersion>2026.9.18.1325</FileVersion>
     <PackageIcon>AppIcon.png</PackageIcon>
   </PropertyGroup>
 
